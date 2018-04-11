@@ -1,0 +1,44 @@
+{
+  "welcomeFile": "/index.html",
+  "routes": [
+    {
+      "path": "/resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/resources",
+        "version": "1.44.12"
+      },
+      "description": "SAPUI5 Resources"
+    },
+    {
+      "path": "/test-resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/test-resources",
+        "version": "1.44.12"
+      },
+      "description": "SAPUI5 Test Resources"
+    },
+    {
+      "path": "/sap/opu/odata",
+      "target": {
+        "type": "destination",
+        "name": "FID",
+        "entryPath": "/sap/opu/odata"
+      },
+      "description": "G500 Gateway Develop"
+    },
+    {
+      "path": "/sap/bc/ui5_ui5",
+      "target": {
+        "type": "destination",
+        "name": "FID",
+        "entryPath": "/sap/bc/ui5_ui5"
+      },
+      "description": "G500 Gateway Develop"
+    }
+  ],
+  "sendWelcomeFileRedirect": true
+}

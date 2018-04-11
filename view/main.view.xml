@@ -1,0 +1,196 @@
+<core:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns:u="sap.ui.unified" xmlns:core="sap.ui.core"
+	xmlns="sap.m" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:l="sap.ui.layout"
+	controllerName="create.sales.ordercreateSalesOrder2.controller.main" displayBlock="true">
+	<App>
+		<NavContainer id="navCon">
+			<pages>
+				<Page title="{i18n>title1}" showHeader="true" id="gasStationSelection">
+					<content>
+						<List id="gasStationList" mode="SingleSelectMaster" items="{modelGasStation>/d/results}" select="handleSelectGasStation"
+							footerText="{i18n>footerGasStation}">
+							<ObjectListItem title="{modelGasStation>Name1}" type="Inactive" number="{modelGasStation>ShipTo}" numberUnit="{modelGasStation>PartnerExt}"
+								icon="sap-icon://mileage">
+								<firstStatus>
+									<ObjectStatus title="{i18n>street}" text="{modelGasStation>Street}" state="None"/>
+								</firstStatus>
+								<secondStatus>
+									<ObjectStatus title="{i18n>city}" text="{modelGasStation>City}" state="None"/>
+								</secondStatus>
+								<attributes>
+									<ObjectAttribute title="{i18n>delivery}" text="{modelGasStation>ShipDesc}"/>
+									<ObjectAttribute title="{i18n>plant}" text="{modelGasStation>PlantDesc}"/>
+								</attributes>
+								<customData>
+									<core:CustomData key="shipTo" value="{modelGasStation>ShipTo}"/>
+									<core:CustomData key="plant" value="{modelGasStation>Plant}"/>
+									<core:CustomData key="salesOrg" value="{modelGasStation>SalesOrg}"/>
+									<core:CustomData key="distrChan" value="{modelGasStation>DistrChan}"/>
+									<core:CustomData key="division" value="{modelGasStation>Division}"/>
+									<core:CustomData key="shipCond" value="{modelGasStation>ShipCond}"/>
+									<core:CustomData key="soldTo" value="{modelGasStation>SoldTo}"/>
+									<core:CustomData key="street" value="{modelGasStation>Street}"/>
+									<core:CustomData key="city" value="{modelGasStation>City}"/>
+									<core:CustomData key="shippment" value="{modelGasStation>ShipDesc}"/>
+									<core:CustomData key="postalCode" value="{modelGasStation>PostalCode}"/>
+									<core:CustomData key="name" value="{modelGasStation>Name1}"/>
+									<core:CustomData key="deliveryDays" value="{modelGasStation>DeliveryDays}"/>
+									<core:CustomData key="maxDays" value="{modelGasStation>MaxDeliveryDays}"/>
+								</customData>
+							</ObjectListItem>
+						</List>
+					</content>
+					<footer>
+						<Toolbar>
+							<Button text="{i18n>refresh}" icon="sap-icon://refresh" press="reload"/>
+							<ToolbarSpacer/>
+							<Button id="stepBtn1" text="{i18n>continue}" icon="sap-icon://arrow-right" enabled="false" press="handleNav">
+								<layoutData>
+									<FlexItemData growFactor="1"/>
+								</layoutData>
+								<customData>
+									<core:CustomData key="target" value="materialSelection"/>
+								</customData>
+							</Button>
+						</Toolbar>
+					</footer>
+				</Page>
+				<Page title="{i18n>title2}" showHeader="true" id="materialSelection" showNavButton="true" navButtonPress="handleNav"
+					class="sapUiContentPadding">
+					<content>
+						<Panel width="auto" class="sapUiResponsiveMargin">
+							<headerToolbar>
+								<Toolbar height="3rem">
+									<Title text="{i18n>materials}"/>
+									<ToolbarSpacer/>
+									<Button id="fuelsBtn" icon="sap-icon://BusinessSuiteInAppSymbols/icon-liquid" text="{i18n>fuels}" press="selectFuels"/>
+									<Button id="fuelsBaseBtn" icon="sap-icon://BusinessSuiteInAppSymbols/icon-liquid" text="{i18n>fuelsBase}" press="selectFuels" visible="false"/>
+									<Button id="addsBtn" icon="sap-icon://lab" text="{i18n>adds}" press="selectAdds"/>
+								</Toolbar>
+							</headerToolbar>
+							<content>
+								<List id="materialList" mode="SingleSelectMaster" visible="false" items="{modelMaterial>/}" select="handleSelectMaterial">
+									<InputListItem label="{modelMaterial>Description}">
+										<Input id="input" placeholder="{i18n>Quantity}" width="200px"
+											value="{path: 'modelMaterial>Quantity', type: 'sap.ui.model.type.Float', formatOptions: { maxFractionDigits : 2, groupingSeparator: ',' }}" enabled="false" 
+											description="{modelMaterial>UnitSales}"  liveChange="validateQty"/>
+										<customData>
+											<core:CustomData key="Material" value="{modelMaterial>Material}"/>
+											<core:CustomData key="Currency" value="{modelMaterial>Currency}"/>
+											<core:CustomData key="Description" value="{modelMaterial>Description}"/>
+											<core:CustomData key="NetValue" value="{modelMaterial>NetValue}"/>
+											<core:CustomData key="ShipTo" value="{modelMaterial>ShipTo}"/>
+											<core:CustomData key="MaterialQty" value="{modelMaterial>Quantity}"/>
+											<core:CustomData key="UnitDescription" value="{modelMaterial>UnitDescription}"/>
+											<core:CustomData key="UnitSales" value="{modelMaterial>UnitSales}"/>
+											<core:CustomData key="MaterialCurrency" value="{modelMaterial>Currency}"/>
+										</customData>
+									</InputListItem>
+								</List>
+							</content>
+						</Panel>
+						<Panel id="calendarPanel" visible="false" width="auto" class="sapUiResponsiveMargin">
+							<headerToolbar>
+								<Toolbar height="3rem">
+									<Title text="{i18n>deliveryDate}"/>
+								</Toolbar>
+							</headerToolbar>
+							<content>
+								<l:HorizontalLayout>
+									<l:content>
+										<u:Calendar id="calendar" width="100%" primaryCalendarType="Gregorian" secondaryCalendarType="Gregorian" select="handleCalendarSelect"
+											showWeekNumbers="false"/>
+										<l:VerticalLayout class="sapUiSmallMargin">
+											<!--CheckBox id="checkBoxRefer" selected="false" text="{i18n>refer}" select="enableRefer"/-->
+											<Text id="BoxRefer" text="{i18n>refer}"/>
+											<Input id="referenceNo" enabled="true" placeholder="{i18n>referNum}" value="" type="Text"/>
+										</l:VerticalLayout>
+									</l:content>
+								</l:HorizontalLayout>
+							</content>
+						</Panel>
+					</content>
+					<footer>
+						<Toolbar>
+							<Button text="{i18n>refresh}" icon="sap-icon://refresh" press="reload"/>
+							<ToolbarSpacer/>
+							<Button text="{i18n>prices}" icon="sap-icon://refresh" press="handlePopoverPress" visible="false"/>
+							<ToolbarSpacer/>
+							<Button id="stepBtn2" text="{i18n>toReview}" icon="sap-icon://cart-full" enabled="false" press="handleNav">
+								<layoutData>
+									<FlexItemData growFactor="1"/>
+								</layoutData>
+								<customData>
+									<core:CustomData key="target" value="reviewPage"/>
+								</customData>
+							</Button>
+						</Toolbar>
+					</footer>
+				</Page>
+				<Page title="{i18n>reviewTitle}" showHeader="true" id="reviewPage" showNavButton="true" navButtonPress="handleNav"
+					class="sapUiContentPadding">
+					<ObjectHeader id="headerObj" title="header" backgroundDesign="Solid" number="111"></ObjectHeader>
+					<Panel id="reviewPan" expandable="true" expanded="true" width="auto" class="sapUiResponsiveMargin">
+						<List id="reviewList" mode="None" items="{reviewMaterial>/}">
+							<ObjectListItem title="{reviewMaterial>materialName}" type="Inactive" number="{reviewMaterial>materialQu}"
+								  icon="sap-icon://product" numberUnit="{reviewMaterial>materialUnitDes}">
+							</ObjectListItem>
+						</List>
+					</Panel>
+					<Panel expandable="true" expanded="true" headerText="{i18n>details}" width="auto" class="sapUiResponsiveMargin">
+						<content>
+							<VBox class="sapUiResponsiveMargin">
+								<FormattedText id="Delivery" htmlText=""/>
+								<FormattedText id="Reference" htmlText=""/>
+							</VBox>
+						</content>
+					</Panel>
+			<!--Add Comments Panel ReviewPage-->				
+					<!--Panel expandable="true" expanded="false" headerText="{i18n>addComments}" width="auto" class="sapUiResponsiveMargin">
+						<content>
+							<TextArea id="commentsArea" value="" maxLength="300" width="100%" liveChange="handleLiveChange" valueState="None" valueLiveUpdate="true"/>
+						</content>
+					</Panel-->
+					<MessageStrip id="msgStrip"
+						text="{i18n>msgVerify}"
+						showIcon="true" showCloseButton="false" class="sapUiMediumMarginBottom"></MessageStrip>
+					<footer>
+						<Toolbar>
+							<Button text="{i18n>refresh}" icon="sap-icon://refresh" press="reload"/>
+							<ToolbarSpacer/>
+							<Button text="{i18n>submitBtn}" icon="sap-icon://cart-full" enabled="true" press="handleNav">
+								<layoutData>
+									<FlexItemData growFactor="1"/>
+								</layoutData>
+								<customData>
+									<core:CustomData key="target" value="purchasePage"/>
+								</customData>
+							</Button>
+						</Toolbar>
+					</footer>
+				</Page>
+				<Page title="{i18n>reviewTitle}" showHeader="false" id="purchasePage" showNavButton="false" navButtonPress="handleNav"
+					class="sapUiContentPadding">
+					<content>
+						<NavContainer>
+							<MessagePage id="_purchasePage" showHeader="false" icon="sap-icon://message-success" text="POhere" description="YourDescHere"></MessagePage>
+						</NavContainer>
+					</content>
+					<footer>
+						<Toolbar>
+							<Button text="{i18n>remake}" icon="sap-icon://refresh" press="reload"/>
+							<ToolbarSpacer/>
+							<!--Button text="{i18n>mailSend}" icon="sap-icon://email" enabled="true" press="handleNav">
+								<layoutData>
+									<FlexItemData growFactor="1"/>
+								</layoutData>
+								<customData>
+									<core:CustomData key="target" value="Submit"/>
+								</customData>
+							</Button-->
+						</Toolbar>
+					</footer>
+				</Page>
+			</pages>
+		</NavContainer>
+	</App>
+</core:View>
